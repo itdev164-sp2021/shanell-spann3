@@ -12,7 +12,11 @@ const IndexPage = ({ data }) => (
         data.allContentfulBlogPost.edges.map(edge => (
           <li>
             <Link to={edge.node.slug} key={edge.node.id}>{edge.node.title}</Link>
-          </li>
+            <div>
+              <img src={edge.node.heroImage.fluid.src} alt="hero image" />
+            </div>
+            <div>{edge.node.body.childMarkdownRemark.excerpt}</div>
+            </li>
         ))
       }
     </ul>
@@ -22,15 +26,25 @@ const IndexPage = ({ data }) => (
 export default IndexPage
 
 export const query = graphql`
-  {
-    allContentfulBlogPost {
-      edges {
-        node {
-          id
-          title
-          slug
+{
+  allContentfulBlogPost {
+    edges {
+      node {
+        id
+        title
+        slug
+        heroImage {
+          fluid(maxWidth: 300){
+            src
+          }
+        }
+        body {
+          childMarkdownRemark {
+            excerpt
+          }
         }
       }
     }
   }
+}
 `
